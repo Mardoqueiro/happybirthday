@@ -1,3 +1,130 @@
-/*-----------------------------------*\
-  #style.css
-\*-----------------------------------*/
+/* ============ BASE ============ */
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(180deg, #FFF6F8 0%, #FFEEF2 40%, #FDF7F0 100%);
+  overflow-x: hidden;
+}
+.font-serif-display { font-family: 'Playfair Display', serif; }
+
+/* Custom scrollbar for a premium touch */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #FFEEF2; }
+::-webkit-scrollbar-thumb { background: #E8AEB7; border-radius: 10px; }
+
+/* ============ GLOWING TEXT ============ */
+.glow-text {
+  text-shadow: 0 0 20px rgba(233, 174, 183, 0.55), 0 0 45px rgba(201, 162, 39, 0.25);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(233,174,183,0.55), 0 0 45px rgba(201,162,39,0.25); }
+  50% { text-shadow: 0 0 32px rgba(233,174,183,0.85), 0 0 65px rgba(201,162,39,0.45); }
+}
+
+/* ============ FLOATING HEARTS (hero) ============ */
+.hero-heart {
+  position: absolute;
+  opacity: 0.55;
+  animation: floatUp linear infinite;
+  will-change: transform;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.4; }
+  100% { transform: translateY(-110vh) translateX(var(--drift, 20px)) rotate(20deg); opacity: 0; }
+}
+
+/* ============ BACKGROUND PARTICLES (site-wide, subtle) ============ */
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============ GIFT BOX ============ */
+.gift-scene { perspective: 1200px; }
+.gift-box { transform-style: preserve-3d; transition: transform 0.6s ease; }
+.gift-lid {
+  transform-origin: top center;
+  transition: transform 1s cubic-bezier(0.68, -0.4, 0.27, 1.4);
+}
+.gift-lid.open {
+  transform: rotateX(-130deg) translateY(-6px);
+}
+.gift-box.shrink { transform: scale(0.85) translateY(10px); opacity: 0.15; }
+.ribbon-vertical, .ribbon-horizontal { transition: opacity 0.5s ease 0.2s; }
+.gift-box.open-ribbons .ribbon-vertical,
+.gift-box.open-ribbons .ribbon-horizontal { opacity: 0; }
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+  60% { opacity: 1; transform: scale(1.03) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.card-pop { animation: popIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+.gift-sparkle {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fff, #E7CE8D);
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes sparkleBurst {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+}
+
+/* ============ GALLERY ============ */
+.gallery-item { overflow: hidden; }
+.gallery-item img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+}
+.gallery-item:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.03) saturate(1.08);
+}
+.gallery-caption {
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+/* ============ REASON CARDS ============ */
+.reason-card { transition: transform 0.45s ease, box-shadow 0.45s ease; }
+.reason-card:hover { transform: translateY(-6px); }
+.reason-inner {
+  transition: max-height 0.5s ease, opacity 0.4s ease, padding 0.5s ease;
+}
+
+/* ============ MUSIC BUTTON ============ */
+.music-btn { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.music-btn:hover { transform: scale(1.08); }
+.music-bar { animation: eq 0.9s ease-in-out infinite alternate; transform-origin: bottom; }
+.music-bar:nth-child(2) { animation-delay: 0.15s; }
+.music-bar:nth-child(3) { animation-delay: 0.3s; }
+@keyframes eq { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
+.paused .music-bar { animation-play-state: paused; }
+
+/* ============ FADE-IN ON SCROLL ============ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============ DIVIDER ============ */
+.ornament::before, .ornament::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C9A227, transparent);
+  vertical-align: middle;
+  margin: 0 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
