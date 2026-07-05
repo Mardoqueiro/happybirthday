@@ -1,16 +1,636 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Mishé</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday, Mishè</title>
 
-    <!--
-    - custom css link
-    -->
-    <link rel="stylesheet" href="asset/css/style.css" />
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
 
+<!--
+- custom css link
+-->
+<link rel="stylesheet" href="asset/css/style.css" />
+
+<!-- Google Fonts: Playfair Display (headings) + Montserrat (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          blush: '#FFE3E9',
+          'blush-deep': '#FBC7D4',
+          rose: '#E8AEB7',
+          'rose-gold': '#C9A0A0',
+          gold: '#C9A227',
+          'gold-soft': '#E7CE8D',
+          cream: '#FFFBF7',
+        },
+        fontFamily: {
+          serif: ['"Playfair Display"', 'serif'],
+          sans: ['"Montserrat"', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  /* ============ BASE ============ */
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(180deg, #FFF6F8 0%, #FFEEF2 40%, #FDF7F0 100%);
+    overflow-x: hidden;
+  }
+  .font-serif-display { font-family: 'Playfair Display', serif; }
+
+  /* Custom scrollbar for a premium touch */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #FFEEF2; }
+  ::-webkit-scrollbar-thumb { background: #E8AEB7; border-radius: 10px; }
+
+  /* ============ GLOWING TEXT ============ */
+  .glow-text {
+    text-shadow: 0 0 20px rgba(233, 174, 183, 0.55), 0 0 45px rgba(201, 162, 39, 0.25);
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 20px rgba(233,174,183,0.55), 0 0 45px rgba(201,162,39,0.25); }
+    50% { text-shadow: 0 0 32px rgba(233,174,183,0.85), 0 0 65px rgba(201,162,39,0.45); }
+  }
+
+  /* ============ FLOATING HEARTS (hero) ============ */
+  .hero-heart {
+    position: absolute;
+    opacity: 0.55;
+    animation: floatUp linear infinite;
+    will-change: transform;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-110vh) translateX(var(--drift, 20px)) rotate(20deg); opacity: 0; }
+  }
+
+  /* ============ BACKGROUND PARTICLES (site-wide, subtle) ============ */
+  #particle-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============ GIFT BOX ============ */
+  .gift-scene { perspective: 1200px; }
+  .gift-box { transform-style: preserve-3d; transition: transform 0.6s ease; }
+  .gift-lid {
+    transform-origin: top center;
+    transition: transform 1s cubic-bezier(0.68, -0.4, 0.27, 1.4);
+  }
+  .gift-lid.open {
+    transform: rotateX(-130deg) translateY(-6px);
+  }
+  .gift-box.shrink { transform: scale(0.85) translateY(10px); opacity: 0.15; }
+  .ribbon-vertical, .ribbon-horizontal { transition: opacity 0.5s ease 0.2s; }
+  .gift-box.open-ribbons .ribbon-vertical,
+  .gift-box.open-ribbons .ribbon-horizontal { opacity: 0; }
+
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+    60% { opacity: 1; transform: scale(1.03) translateY(-4px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .card-pop { animation: popIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+  .gift-sparkle {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, #fff, #E7CE8D);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes sparkleBurst {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+  }
+
+  /* ============ GALLERY ============ */
+  .gallery-item { overflow: hidden; }
+  .gallery-item img {
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.08);
+    filter: brightness(1.03) saturate(1.08);
+  }
+  .gallery-caption {
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+  /* ============ REASON CARDS ============ */
+  .reason-card { transition: transform 0.45s ease, box-shadow 0.45s ease; }
+  .reason-card:hover { transform: translateY(-6px); }
+  .reason-inner {
+    transition: max-height 0.5s ease, opacity 0.4s ease, padding 0.5s ease;
+  }
+
+  /* ============ MUSIC BUTTON ============ */
+  .music-btn { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+  .music-btn:hover { transform: scale(1.08); }
+  .music-bar { animation: eq 0.9s ease-in-out infinite alternate; transform-origin: bottom; }
+  .music-bar:nth-child(2) { animation-delay: 0.15s; }
+  .music-bar:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes eq { 0% { transform: scaleY(0.3); } 100% { transform: scaleY(1); } }
+  .paused .music-bar { animation-play-state: paused; }
+
+  /* ============ FADE-IN ON SCROLL ============ */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ============ DIVIDER ============ */
+  .ornament::before, .ornament::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #C9A227, transparent);
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+</style>
 </head>
-<body>
-    
+
+<body class="text-rose-900 antialiased relative">
+
+<!-- ============================================================ -->
+<!-- BACKGROUND PARTICLE CANVAS (hearts / sparkles, whole site)     -->
+<!-- ============================================================ -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ============================================================ -->
+<!-- MUSIC TOGGLE (fixed corner)                                    -->
+<!-- ============================================================ -->
+<div class="fixed bottom-5 right-5 z-50">
+  <!-- 🔊 Replace the src below with your own track URL -->
+  <audio id="bg-music" loop preload="none">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8e70c5867.mp3?filename=romantic-piano-108271.mp3" type="audio/mpeg">
+  </audio>
+  <button id="music-toggle" class="music-btn paused flex items-center gap-2 bg-white/80 backdrop-blur-md border border-rose-200 shadow-lg shadow-rose-200/50 rounded-full px-4 py-3">
+    <span class="flex items-end gap-[3px] h-4">
+      <span class="music-bar w-[3px] h-2 bg-rose-400 rounded-full"></span>
+      <span class="music-bar w-[3px] h-3 bg-rose-400 rounded-full"></span>
+      <span class="music-bar w-[3px] h-1.5 bg-rose-400 rounded-full"></span>
+    </span>
+    <span id="music-label" class="text-xs font-medium tracking-wide text-rose-600 hidden sm:inline">Play a song</span>
+  </button>
+</div>
+
+<!-- ============================================================ -->
+<!-- HERO SECTION                                                   -->
+<!-- ============================================================ -->
+<section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
+  <!-- floating hero hearts -->
+  <div id="hero-hearts" class="absolute inset-0 pointer-events-none"></div>
+
+  <p class="relative z-10 uppercase tracking-[0.35em] text-xs sm:text-sm text-gold font-medium mb-6 ornament">
+    Today is your day
+  </p>
+
+  <h1 class="relative z-10 font-serif-display italic text-5xl sm:text-6xl md:text-8xl text-rose-800 glow-text leading-tight">
+    Happy Birthday,<br class="sm:hidden">
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-rose-400 to-gold">Mishè</span>
+  </h1>
+
+  <p class="relative z-10 mt-8 max-w-xl text-rose-700/80 font-light text-base sm:text-lg leading-relaxed">
+    A little something to make your day feel special.
+    Scroll gently &mdash; I made you something.
+  </p>
+
+  <a href="#gift" class="relative z-10 mt-12 inline-flex items-center gap-2 text-rose-600 text-sm tracking-widest uppercase group">
+    Begin
+    <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    </svg>
+  </a>
+</section>
+
+<!-- ============================================================ -->
+<!-- GIFT BOX SECTION                                               -->
+<!-- ============================================================ -->
+<section id="gift" class="relative z-10 px-6 py-28 flex flex-col items-center text-center">
+  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 mb-3 ornament">A little gift</h2>
+  <p class="reveal max-w-md text-rose-700/70 font-light mb-16">Go on... you know you want to open it.</p>
+
+  <div class="gift-scene relative w-full max-w-sm h-72 flex items-center justify-center">
+    <!-- SPARKLE BURST CONTAINER -->
+    <div id="sparkle-container" class="absolute inset-0 pointer-events-none"></div>
+
+    <!-- GIFT BOX (click target) -->
+    <button id="gift-box" aria-label="Open your gift" class="gift-box relative w-48 h-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-lg cursor-pointer">
+      <!-- box body -->
+      <div class="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-br from-rose-300 to-rose-400 rounded-md shadow-2xl shadow-rose-300/60"></div>
+      <!-- vertical ribbon -->
+      <div class="ribbon-vertical absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-28 bg-gold-soft"></div>
+      <!-- lid -->
+      <div class="gift-lid absolute top-6 left-[-6px] right-[-6px] h-10 bg-gradient-to-br from-rose-400 to-rose-500 rounded-md shadow-lg">
+        <!-- horizontal ribbon on lid -->
+        <div class="ribbon-horizontal absolute inset-y-0 left-1/2 -translate-x-1/2 w-6 bg-gold-soft"></div>
+        <!-- bow -->
+        <div class="absolute -top-6 left-1/2 -translate-x-1/2 flex">
+          <div class="w-5 h-5 rounded-full bg-gold-soft -mr-1 rotate-12"></div>
+          <div class="w-5 h-5 rounded-full bg-gold-soft -ml-1 -rotate-12"></div>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <p id="gift-hint" class="mt-6 text-xs uppercase tracking-widest text-rose-500/70">Tap the box</p>
+
+  <!-- REVEALED CARD -->
+  <div id="gift-card" class="hidden mt-10 max-w-lg w-full bg-white/90 backdrop-blur-md border border-gold-soft/50 rounded-2xl shadow-2xl shadow-rose-200/60 p-10 text-left">
+    <p class="font-serif-display italic text-gold text-sm mb-4 ornament block text-center">For you</p>
+    <p class="font-serif-display text-xl sm:text-2xl text-rose-800 leading-relaxed">
+      My darling Mishè,
+    </p>
+    <p class="mt-4 text-rose-700/90 font-light leading-loose">
+      <!-- ✏️ Personalize this message freely -->
+      I wanted today to feel a little different, a little more yours. Every time we talk, you make me
+      smile in a way that's hard to explain and honestly a little inconvenient when I'm supposed to be
+      focused on something else. I hope this year brings you everything you're hoping for, and I'm really
+      glad I get to know you. Happy birthday, Mishè.
+    </p>
+    <p class="mt-6 text-right font-serif-display italic text-rose-600">From, Mardo</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- PHOTO GALLERY                                                  -->
+<!-- ============================================================ -->
+<section class="relative z-10 px-6 py-28 max-w-6xl mx-auto">
+  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Good moments</h2>
+  <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">
+    A few snapshots worth smiling about.
+  </p>
+
+  <!--
+    🖼️ GALLERY: swap the src attributes below with your own photo URLs.
+    Add or remove <div class="gallery-item ..."> blocks as needed.
+  -->
+  <div class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+      <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&q=80" alt="Memory one" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">That golden afternoon</div>
+    </div>
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
+      <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=600&q=80" alt="Memory two" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">That day we couldn't stop laughing</div>
+    </div>
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 col-span-2 md:col-span-1">
+      <img src="https://images.unsplash.com/photo-1529636444744-31558a6e0edf?w=600&q=80" alt="Memory three" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">A day worth remembering</div>
+    </div>
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+      <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&q=80" alt="Memory four" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">Golden hour, your favourite</div>
+    </div>
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
+      <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600&q=80" alt="Memory five" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">A quiet, easy morning</div>
+    </div>
+    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+      <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&q=80" alt="Memory six" class="w-full h-full object-cover">
+      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">Somewhere worth going back to</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- REASONS SECTION                                                -->
+<!-- ============================================================ -->
+<section class="relative z-10 px-6 py-28 max-w-4xl mx-auto">
+  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Things I admire about you</h2>
+  <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">Tap each card &mdash; there's a note underneath.</p>
+
+  <!--
+    💌 REASONS: edit the data-note text on each card, or duplicate a card block to add more.
+  -->
+  <div class="reveal grid sm:grid-cols-2 gap-5">
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">Your laugh</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          It's loud, it's unfiltered, and it's genuinely one of my favourite sounds &mdash; especially when you try to hold it in and can't.
+        </p>
+      </div>
+    </button>
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">How you remember details</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          You remember the small things I mention once in passing, and somehow that always ends up meaning a lot.
+        </p>
+      </div>
+    </button>
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">Our inside jokes</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          You know exactly which one I mean. Still not over it.
+        </p>
+      </div>
+    </button>
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">How easy you are to talk to</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          I don't have to overthink what to say around you. Conversations with you just flow, and I like that.
+        </p>
+      </div>
+    </button>
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">Your quiet strength</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          I've noticed how you carry hard things gracefully, and it's something I genuinely respect about you.
+        </p>
+      </div>
+    </button>
+
+    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+      <div class="flex items-center justify-between">
+        <span class="font-serif-display text-lg text-rose-800">Simply, you</span>
+        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+      </div>
+      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+          Some things don't need a full explanation. I just really like getting to know you.
+        </p>
+      </div>
+    </button>
+
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- CLOSING / FOOTER                                               -->
+<!-- ============================================================ -->
+<footer class="relative z-10 px-6 py-24 text-center">
+  <p class="reveal font-serif-display italic text-2xl sm:text-3xl text-rose-800 max-w-xl mx-auto leading-relaxed">
+    Hope this year brings you so many good things. Happy Birthday, Mishè. 🤍
+  </p>
+  <p class="reveal mt-6 text-xs uppercase tracking-[0.3em] text-rose-400">Made with care, just for you</p>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT                                                     -->
+<!-- ============================================================ -->
+<script>
+  /* =========================================================
+     1. BACKGROUND PARTICLE EFFECT (hearts + sparkles)
+     Lightweight canvas animation, capped particle count so it
+     stays smooth on both desktop and mobile.
+  ========================================================== */
+  (function backgroundParticles() {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const PARTICLE_COUNT = window.innerWidth < 640 ? 16 : 28;
+    let particles = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function makeParticle() {
+      const isHeart = Math.random() > 0.4;
+      return {
+        x: Math.random() * width,
+        y: height + Math.random() * height,
+        size: isHeart ? 8 + Math.random() * 10 : 2 + Math.random() * 3,
+        speed: 0.2 + Math.random() * 0.5,
+        drift: (Math.random() - 0.5) * 0.4,
+        opacity: 0.15 + Math.random() * 0.25,
+        isHeart,
+        angle: Math.random() * Math.PI * 2,
+      };
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(makeParticle());
+
+    function drawHeart(x, y, size, opacity) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = '#E8AEB7';
+      ctx.beginPath();
+      const topCurveHeight = size * 0.3;
+      ctx.moveTo(x, y + topCurveHeight);
+      ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 1.4, x, y + size);
+      ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 1.4, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+      ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSparkle(x, y, size, opacity) {
+      ctx.save();
+      ctx.globalAlpha = opacity;
+      ctx.fillStyle = '#E7CE8D';
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        p.y -= p.speed;
+        p.x += p.drift;
+        if (p.y < -20) Object.assign(p, makeParticle(), { y: height + 20 });
+        if (p.isHeart) drawHeart(p.x, p.y, p.size, p.opacity);
+        else drawSparkle(p.x, p.y, p.size, p.opacity);
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  /* =========================================================
+     2. HERO FLOATING HEARTS (CSS-driven, decorative)
+  ========================================================== */
+  (function heroHearts() {
+    const container = document.getElementById('hero-hearts');
+    const HEART_COUNT = 12;
+    for (let i = 0; i < HEART_COUNT; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'hero-heart';
+      heart.textContent = '♥';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.bottom = '-10%';
+      heart.style.fontSize = (12 + Math.random() * 18) + 'px';
+      heart.style.color = Math.random() > 0.5 ? '#E8AEB7' : '#E7CE8D';
+      heart.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+      heart.style.animationDuration = (8 + Math.random() * 10) + 's';
+      heart.style.animationDelay = (Math.random() * 10) + 's';
+      container.appendChild(heart);
+    }
+  })();
+
+  /* =========================================================
+     3. GIFT BOX INTERACTION
+  ========================================================== */
+  (function giftBox() {
+    const box = document.getElementById('gift-box');
+    const card = document.getElementById('gift-card');
+    const hint = document.getElementById('gift-hint');
+    const sparkleContainer = document.getElementById('sparkle-container');
+    let opened = false;
+
+    function burstSparkles() {
+      for (let i = 0; i < 18; i++) {
+        const s = document.createElement('span');
+        s.className = 'gift-sparkle';
+        const size = 4 + Math.random() * 6;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.left = '50%';
+        s.style.top = '40%';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 60 + Math.random() * 100;
+        s.style.setProperty('--sx', Math.cos(angle) * dist + 'px');
+        s.style.setProperty('--sy', Math.sin(angle) * dist + 'px');
+        s.style.animation = 'sparkleBurst 0.9s ease-out forwards';
+        sparkleContainer.appendChild(s);
+        setTimeout(() => s.remove(), 950);
+      }
+    }
+
+    box.addEventListener('click', () => {
+      if (opened) return;
+      opened = true;
+
+      const lid = box.querySelector('.gift-lid');
+      lid.classList.add('open');
+      box.classList.add('open-ribbons');
+      burstSparkles();
+      hint.style.opacity = '0';
+
+      setTimeout(() => {
+        box.classList.add('shrink');
+      }, 350);
+
+      setTimeout(() => {
+        card.classList.remove('hidden');
+        card.classList.add('card-pop');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 700);
+    });
+  })();
+
+  /* =========================================================
+     4. "REASONS" ACCORDION CARDS
+  ========================================================== */
+  (function reasonCards() {
+    document.querySelectorAll('.reason-card').forEach((cardBtn) => {
+      const inner = cardBtn.querySelector('.reason-inner');
+      const icon = cardBtn.querySelector('.reason-icon');
+
+      cardBtn.addEventListener('click', () => {
+        const isOpen = inner.style.maxHeight && inner.style.maxHeight !== '0px';
+        if (isOpen) {
+          inner.style.maxHeight = '0px';
+          inner.style.opacity = '0';
+          icon.style.transform = 'rotate(0deg)';
+        } else {
+          inner.style.maxHeight = inner.scrollHeight + 'px';
+          inner.style.opacity = '1';
+          icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
+  })();
+
+  /* =========================================================
+     5. MUSIC TOGGLE
+  ========================================================== */
+  (function musicToggle() {
+    const audio = document.getElementById('bg-music');
+    const btn = document.getElementById('music-toggle');
+    const label = document.getElementById('music-label');
+    let playing = false;
+
+    btn.addEventListener('click', () => {
+      if (!playing) {
+        audio.play().catch(() => { /* autoplay restrictions - user gesture already given here */ });
+        btn.classList.remove('paused');
+        label.textContent = 'Now playing';
+        playing = true;
+      } else {
+        audio.pause();
+        btn.classList.add('paused');
+        label.textContent = 'Play a song';
+        playing = false;
+      }
+    });
+  })();
+
+  /* =========================================================
+     6. SCROLL-REVEAL ANIMATIONS
+  ========================================================== */
+  (function scrollReveal() {
+    const items = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    items.forEach((item) => observer.observe(item));
+  })();
+</script>
+
 </body>
 </html>
