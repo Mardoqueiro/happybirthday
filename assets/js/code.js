@@ -5,6 +5,7 @@
    Lightweight canvas animation, capped particle count so it
    stays smooth on both desktop and mobile.
 ========================================================== */
+
 (function backgroundParticles() {
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
