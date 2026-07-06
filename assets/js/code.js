@@ -1,11 +1,5 @@
 'use strict';
 
-/* =========================================================
-   1. BACKGROUND PARTICLE EFFECT (hearts + sparkles)
-   Lightweight canvas animation, capped particle count so it
-   stays smooth on both desktop and mobile.
-========================================================== */
-
 (function backgroundParticles() {
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
@@ -181,7 +175,7 @@
 
   btn.addEventListener('click', () => {
     if (!playing) {
-      audio.play().catch(() => { /* autoplay restrictions - user gesture already given here */ });
+      audio.play().catch(() => { autoplay });
       btn.classList.remove('paused');
       label.textContent = 'Now playing';
       playing = true;

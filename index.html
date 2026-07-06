@@ -1,298 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Happy Birthday, Mishé</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Mishé</title>
 
-<!-- Tailwind CSS via CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="assets/image/IMG_0289.jpeg" src="assets/image/IMG_0298.jpeg" type="image/x-icon" />
 
-<!-- Google Fonts: Playfair Display (headings) + Montserrat (body) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Tailwind config must stay inline so it runs before Tailwind scans the page -->
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          blush: '#FFE3E9',
-          'blush-deep': '#FBC7D4',
-          rose: '#E8AEB7',
-          'rose-gold': '#C9A0A0',
-          gold: '#C9A227',
-          'gold-soft': '#E7CE8D',
-          cream: '#FFFBF7',
-        },
-        fontFamily: {
-          serif: ['"Playfair Display"', 'serif'],
-          sans: ['"Montserrat"', 'sans-serif'],
+  <!-- Bootstrap CSS via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+  <!-- Google Fonts: Playfair Display (headings) + Montserrat (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush: '#FFE3E9',
+            'blush-deep': '#FBC7D4',
+            rose: '#E8AEB7',
+            'rose-gold': '#C9A0A0',
+            gold: '#C9A227',
+            'gold-soft': '#E7CE8D',
+            cream: '#FFFBF7',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Montserrat"', 'sans-serif'],
+          },
         },
       },
-    },
-  };
-</script>
+    };
+  </script>
 
-<!-- Custom styles -->
-<link rel="stylesheet" href="assets/css/style.css">
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body class="text-rose-900 antialiased relative">
 
-<!-- ============================================================ -->
-<!-- BACKGROUND PARTICLE CANVAS (hearts / sparkles, whole site)     -->
-<!-- ============================================================ -->
-<canvas id="particle-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
 
-<!-- ============================================================ -->
-<!-- MUSIC TOGGLE (fixed corner)                                    -->
-<!-- ============================================================ -->
-<div class="fixed bottom-5 right-5 z-50">
-  <!-- 🔊 Replace the src below with your own track URL -->
-  <!-- Note: this <audio> approach only works with a file you're allowed to host directly
-       (e.g. a royalty-free track, or your own legally purchased copy placed in assets/).
-       For a licensed song like "Japanese Denim," use a Spotify embed instead — see README. -->
+  <!-- ============================================================ -->
+  <!-- MUSIC TOGGLE (fixed corner)                                    -->
+  <!-- ============================================================ -->
+  <div class="fixed bottom-5 right-5 z-50">
 
-    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/7IVukH71OXfAu3KudrrizN?utm_source=generator&si=f6df70b6deaa40bf" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    
-  <audio id="bg-music" loop preload="none">
-    <source src="assets/image/Japanese Denim.mp3" type="audio/mpeg">
-  </audio>
-  <button id="music-toggle" class="music-btn paused flex items-center gap-2 bg-white/80 backdrop-blur-md border border-rose-200 shadow-lg shadow-rose-200/50 rounded-full px-4 py-3">
-    <span class="flex items-end gap-[3px] h-4">
-      <span class="music-bar w-[3px] h-2 bg-rose-400 rounded-full"></span>
-      <span class="music-bar w-[3px] h-3 bg-rose-400 rounded-full"></span>
-      <span class="music-bar w-[3px] h-1.5 bg-rose-400 rounded-full"></span>
-    </span>
-    <span id="music-label" class="text-xs font-medium tracking-wide text-rose-600 hidden sm:inline">Play a song</span>
-  </button>
-</div>
+    <audio id="bg-music" loop preload="none">
+      <source src="assets/image/Japanese Denim.mp3" type="audio/mpeg">
 
-<!-- ============================================================ -->
-<!-- HERO SECTION                                                   -->
-<!-- ============================================================ -->
-<section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
-  <!-- floating hero hearts -->
-  <div id="hero-hearts" class="absolute inset-0 pointer-events-none"></div>
+      <!-- <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/7IVukH71OXfAu3KudrrizN?utm_source=generator&si=1cd08ec8f77e44c9" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
 
-  <p class="relative z-10 uppercase tracking-[0.35em] text-xs sm:text-sm text-gold font-medium mb-6 ornament">
-    Today is your day
-  </p>
+    </audio>
+    <button id="music-toggle"
+      class="music-btn paused flex items-center gap-2 bg-white/80 backdrop-blur-md border border-rose-200 shadow-lg shadow-rose-200/50 rounded-full px-4 py-3">
+      <span class="flex items-end gap-[3px] h-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+        </svg>
+      </span>
+      <span id="music-label" class="text-xs font-medium tracking-wide text-rose-600 hidden sm:inline">Play a song</span>
+    </button>
+  </div>
 
-  <h1 class="relative z-10 font-serif-display italic text-5xl sm:text-6xl md:text-8xl text-rose-800 glow-text leading-tight">
-    Happy Birthday,<br class="sm:hidden">
-    <!-- <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-rose-400 to-gold"> -->
-        Mishé
-    <!-- </span> -->
-  </h1>
+  <!-- ============================================================ -->
+  <!-- HERO SECTION                                                   -->
+  <!-- ============================================================ -->
+  <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 text-center">
+    <!-- floating hero hearts -->
+    <div id="hero-hearts" class="absolute inset-0 pointer-events-none"></div>
 
-  <p class="relative z-10 mt-8 max-w-xl text-rose-700/80 font-light text-base sm:text-lg leading-relaxed">
-    A little something to make your day feel special.
-    Scroll gently &mdash; I made you something.
-  </p>
+    <p class="relative z-10 uppercase tracking-[0.35em] text-xs sm:text-sm text-gold font-medium mb-6 ornament">
+      Today is your day
+    </p>
 
-  <a href="#gift" class="relative z-10 mt-12 inline-flex items-center gap-2 text-rose-600 text-sm tracking-widest uppercase group">
-    Begin
-    <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    </svg>
-  </a>
-</section>
+    <h1
+      class="relative z-10 font-serif-display italic text-5xl sm:text-6xl md:text-8xl text-rose-800 glow-text leading-tight">
+      Happy Birthday, <br class="sm:hidden">
+      <!-- <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-rose-400 to-gold"> -->
+      Mishé
+      <!-- </span> -->
+    </h1>
 
-<!-- ============================================================ -->
-<!-- GIFT BOX SECTION                                               -->
-<!-- ============================================================ -->
-<section id="gift" class="relative z-10 px-6 py-28 flex flex-col items-center text-center">
-  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 mb-3 ornament">A little gift</h2>
-  <p class="reveal max-w-md text-rose-700/70 font-light mb-16">Go on... you know you want to open it.</p>
+    <p class="relative z-10 mt-8 max-w-xl text-rose-700/80 font-light text-base sm:text-lg leading-relaxed">
+      A little something to make your day feel special.
+      Scroll gently &mdash; I made you something.
+    </p>
 
-  <div class="gift-scene relative w-full max-w-sm h-72 flex items-center justify-center">
-    <!-- SPARKLE BURST CONTAINER -->
-    <div id="sparkle-container" class="absolute inset-0 pointer-events-none"></div>
+    <a href="#gift"
+      class="relative z-10 mt-12 inline-flex items-center gap-2 text-rose-600 text-sm tracking-widest uppercase group">
+      Begin
+      <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </a>
+  </section>
 
-    <!-- GIFT BOX (click target) -->
-    <button id="gift-box" aria-label="Open your gift" class="gift-box relative w-48 h-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-lg cursor-pointer">
-      <!-- box body -->
-      <div class="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-br from-rose-300 to-rose-400 rounded-md shadow-2xl shadow-rose-300/60"></div>
-      <!-- vertical ribbon -->
-      <div class="ribbon-vertical absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-28 bg-gold-soft"></div>
-      <!-- lid -->
-      <div class="gift-lid absolute top-6 left-[-6px] right-[-6px] h-10 bg-gradient-to-br from-rose-400 to-rose-500 rounded-md shadow-lg">
-        <!-- horizontal ribbon on lid -->
-        <div class="ribbon-horizontal absolute inset-y-0 left-1/2 -translate-x-1/2 w-6 bg-gold-soft"></div>
-        <!-- bow -->
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 flex">
-          <div class="w-5 h-5 rounded-full bg-gold-soft -mr-1 rotate-12"></div>
-          <div class="w-5 h-5 rounded-full bg-gold-soft -ml-1 -rotate-12"></div>
+  <!-- ============================================================ -->
+  <!-- GIFT BOX SECTION                                               -->
+  <!-- ============================================================ -->
+  <section id="gift" class="relative z-10 px-6 py-28 flex flex-col items-center text-center">
+    <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 mb-3 ornament">A little gift</h2>
+    <p class="reveal max-w-md text-rose-700/70 font-light mb-16">Go on... you know you want to open it.</p>
+
+    <div class="gift-scene relative w-full max-w-sm h-72 flex items-center justify-center">
+      <!-- SPARKLE BURST CONTAINER -->
+      <div id="sparkle-container" class="absolute inset-0 pointer-events-none"></div>
+
+      <!-- GIFT BOX (click target) -->
+      <button id="gift-box" aria-label="Open your gift"
+        class="gift-box relative w-48 h-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold rounded-lg cursor-pointer">
+        <!-- box body -->
+        <div
+          class="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-br from-rose-300 to-rose-400 rounded-md shadow-2xl shadow-rose-300/60">
         </div>
-      </div>
-    </button>
-  </div>
+        <!-- vertical ribbon -->
+        <div class="ribbon-vertical absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-28 bg-gold-soft"></div>
+        <!-- lid -->
+        <div
+          class="gift-lid absolute top-6 left-[-6px] right-[-6px] h-10 bg-gradient-to-br from-rose-400 to-rose-500 rounded-md shadow-lg">
+          <!-- horizontal ribbon on lid -->
+          <div class="ribbon-horizontal absolute inset-y-0 left-1/2 -translate-x-1/2 w-6 bg-gold-soft"></div>
+          <!-- bow -->
+          <div class="absolute -top-6 left-1/2 -translate-x-1/2 flex">
+            <div class="w-5 h-5 rounded-full bg-gold-soft -mr-1 rotate-12"></div>
+            <div class="w-5 h-5 rounded-full bg-gold-soft -ml-1 -rotate-12"></div>
+          </div>
+        </div>
+      </button>
+    </div>
 
-  <p id="gift-hint" class="mt-6 text-xs uppercase tracking-widest text-rose-500/70">Tap the box</p>
+    <p id="gift-hint" class="mt-6 text-xs uppercase tracking-widest text-rose-500/70">Tap the box</p>
 
-  <!-- REVEALED CARD -->
-  <div id="gift-card" class="hidden mt-10 max-w-lg w-full bg-white/90 backdrop-blur-md border border-gold-soft/50 rounded-2xl shadow-2xl shadow-rose-200/60 p-10 text-left">
-    <p class="font-serif-display italic text-gold text-sm mb-4 ornament block text-center">For you</p>
-    <p class="font-serif-display text-xl sm:text-2xl text-rose-800 leading-relaxed">
-      My darling Mishé,
+    <!-- REVEALED CARD -->
+    <div id="gift-card"
+      class="hidden mt-10 max-w-lg w-full bg-white/90 backdrop-blur-md border border-gold-soft/50 rounded-2xl shadow-2xl shadow-rose-200/60 p-10 text-left">
+      <p class="font-serif-display italic text-gold text-sm mb-4 ornament block text-center">For you</p>
+      <p class="font-serif-display text-xl sm:text-2xl text-rose-800 leading-relaxed">
+        My darling Mishé,
+      </p>
+      <p class="mt-4 text-rose-700/90 font-light leading-loose">
+        I wanted today to feel a little different, a little more yours. Every time we talk, you make me
+        smile in a way that's hard to explain and honestly a little inconvenient when I'm supposed to be
+        focused on something else. I hope this year brings you everything you're hoping for, and I'm really
+        glad I get to know you. Happy birthday, Mishè.
+      </p>
+      <p class="mt-6 text-right font-serif-display italic text-rose-600">From, Mardo</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PHOTO GALLERY                                                  -->
+  <!-- ============================================================ -->
+  <section class="relative z-10 px-6 py-28 max-w-6xl mx-auto">
+    <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Good moments</h2>
+    <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">
+      A few snapshots worth smiling about.
     </p>
-    <p class="mt-4 text-rose-700/90 font-light leading-loose">
-      <!-- ✏️ Personalize this message freely -->
-      I wanted today to feel a little different, a little more yours. Every time we talk, you make me
-      smile in a way that's hard to explain and honestly a little inconvenient when I'm supposed to be
-      focused on something else. I hope this year brings you everything you're hoping for, and I'm really
-      glad I get to know you. Happy birthday, Mishè.
+
+    <div class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+        <img src="assets/image/IMG_0328.jpeg" alt="Memory one" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Our favourite picture together</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
+        <img src="assets/image/IMG_0325.jpeg" alt="Memory two" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Your beautiful smile</div>
+      </div>
+
+      <div
+        class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 col-span-2 md:col-span-1">
+        <img src="assets/image/IMG_0302.jpeg" alt="Memory three" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          A day worth remembering</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+        <img src="assets/image/IMG_0473.jpeg" alt="Memory four" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Golden hour, your favourite</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
+        <img src="assets/image/IMG_0318.jpeg" alt="Memory five" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Wine and good conversation</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+        <video width="320" height="240" autoplay muted loop alt="Memory six" class="w-full h-full object-cover">
+          <source src="assets/image/IMG_0336.mov" type="video/mp4">
+        </video>
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Somewhere worth going back to</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
+        <img src="assets/image/IMG_0285.jpeg" alt="Memory seven" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Mirror pic, obviously</div>
+      </div>
+
+      <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
+        <video width="320" height="240" autoplay muted loop alt="Memory eight" class="w-full h-full object-cover">
+          <source src="assets/image/IMG_0416.mov" type="video/mp4">
+        </video>
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          Woof Project's finest" (for the dog)</div>
+      </div>
+
+      <div
+        class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 col-span-2 md:col-span-1">
+        <img src="assets/image/IMG_0298.jpeg" alt="Memory nine" class="w-full h-full object-cover">
+        <div
+          class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">
+          One really good day at the Waterfront.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- REASONS SECTION                                                -->
+  <!-- ============================================================ -->
+  <section class="relative z-10 px-6 py-28 max-w-4xl mx-auto">
+    <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Things I admire
+      about you</h2>
+    <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">Tap each card. There's a note
+      underneath.</p>
+
+    <div class="reveal grid sm:grid-cols-2 gap-5">
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your laugh</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            It's loud, it's unfiltered, and it's genuinely one of my favourite sounds, especially when you try to hold
+            it in and can't.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your smile</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            It shows up right before you laugh, like a little warning sign, and honestly it might be my favourite thing
+            about your whole face.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your taste</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            You clearly have excellent taste — exhibit A, you chose to spend your time with me. I'm not going to argue
+            with the evidence.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">How easy you are to talk to</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            I don't have to overthink what to say around you. Conversations with you just flow, and I like that. Even if
+            it's across 3 separate platforms.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your quiet strength</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            I've noticed how you carry hard things gracefully, and it's something I genuinely respect about you.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your ambition</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            You talk about your goals like they're already decided, not just hoped for. That kind of certainty is rare,
+            and it's contagious to be around.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">The little things</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            The way you text, the way you say certain words, the small habits. I notice more of them than I let on.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Being around you</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            It's just easy. No effort involved, no performance required. That's rarer than people think.
+          </p>
+        </div>
+      </button>
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Your ambition</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            You talk about your goals like they're already decided, not just hoped for. That kind of certainty is rare,
+            and it's contagious to be around.
+          </p>
+        </div>
+      </button>
+
+      <button
+        class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
+        <div class="flex items-center justify-between">
+          <span class="font-serif-display text-lg text-rose-800">Simply, you</span>
+          <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
+        </div>
+        <div class="reason-inner overflow-hidden max-h-0 opacity-0">
+          <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
+            Some things don't need a full explanation. I just really like getting to know you.
+          </p>
+        </div>
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CLOSING / FOOTER                                               -->
+  <!-- ============================================================ -->
+  <footer class="relative z-10 px-6 py-24 text-center">
+    <p class="reveal font-serif-display italic text-2xl sm:text-3xl text-rose-800 max-w-xl mx-auto leading-relaxed">
+      Hope this year brings you so many good things. Happy Birthday, Mishé. 🤍
     </p>
-    <p class="mt-6 text-right font-serif-display italic text-rose-600">From, Mardo</p>
-  </div>
-</section>
+    <p class="reveal mt-6 text-xs uppercase tracking-[0.3em] text-rose-400">Made with care, just for you</p>
+  </footer>
 
-<!-- ============================================================ -->
-<!-- PHOTO GALLERY                                                  -->
-<!-- ============================================================ -->
-<section class="relative z-10 px-6 py-28 max-w-6xl mx-auto">
-  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Good moments</h2>
-  <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">
-    A few snapshots worth smiling about.
-  </p>
-
-  <!--
-    🖼️ GALLERY: this points at local files inside assets/image/.
-    Drop your own photos into assets/image/ using these filenames
-    (or edit the src paths below to match whatever you name them).
-  -->
-  <div class="reveal grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
-      <img src="assets/image/IMG_0328.jpeg" alt="Memory one" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">That golden afternoon</div>
-    </div>
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
-      <img src="assets/image/IMG_0325.jpeg" alt="Memory two" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">That day we couldn't stop laughing</div>
-    </div>
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 col-span-2 md:col-span-1">
-      <img src="assets/image/IMG_0302.jpeg" alt="Memory three" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">A day worth remembering</div>
-    </div>
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
-      <img src="assets/image/IMG_0291.jpeg" alt="Memory four" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">Golden hour, your favourite</div>
-    </div>
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50 mt-6">
-      <img src="assets/image/IMG_0282.jpeg" alt="Memory five" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">A quiet, easy morning</div>
-    </div>
-    <div class="gallery-item relative rounded-2xl aspect-square shadow-lg shadow-rose-200/50">
-      <img src="assets/image/photo-6.jpg" alt="Memory six" class="w-full h-full object-cover">
-      <div class="gallery-caption absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent text-white text-sm p-3 font-light">Somewhere worth going back to</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================ -->
-<!-- REASONS SECTION                                                -->
-<!-- ============================================================ -->
-<section class="relative z-10 px-6 py-28 max-w-4xl mx-auto">
-  <h2 class="reveal font-serif-display text-3xl sm:text-4xl text-rose-800 text-center mb-3 ornament">Things I admire about you</h2>
-  <p class="reveal text-center max-w-md mx-auto text-rose-700/70 font-light mb-16">Tap each card. There's a note underneath.</p>
-
-  <!--
-    💌 REASONS: edit the note text inside each card, or duplicate a
-    <button class="reason-card ..."> block to add more.
-  -->
-  <div class="reveal grid sm:grid-cols-2 gap-5">
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">Your laugh</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          It's loud, it's unfiltered, and it's genuinely one of my favourite sounds, especially when you try to hold it in and can't.
-        </p>
-      </div>
-    </button>
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">How you remember details</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          You remember the small things I mention once in passing, and somehow that always ends up meaning a lot.
-        </p>
-      </div>
-    </button>
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">Our inside jokes</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          You know exactly which one I mean. Still not over it.
-        </p>
-      </div>
-    </button>
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">How easy you are to talk to</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          I don't have to overthink what to say around you. Conversations with you just flow, and I like that.
-        </p>
-      </div>
-    </button>
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">Your quiet strength</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          I've noticed how you carry hard things gracefully, and it's something I genuinely respect about you.
-        </p>
-      </div>
-    </button>
-
-    <button class="reason-card text-left bg-white/80 border border-rose-100 rounded-2xl p-6 shadow-md shadow-rose-100">
-      <div class="flex items-center justify-between">
-        <span class="font-serif-display text-lg text-rose-800">Simply, you</span>
-        <span class="reason-icon text-gold text-xl transition-transform duration-300">+</span>
-      </div>
-      <div class="reason-inner overflow-hidden max-h-0 opacity-0">
-        <p class="pt-3 text-sm text-rose-700/80 font-light leading-relaxed">
-          Some things don't need a full explanation. I just really like getting to know you.
-        </p>
-      </div>
-    </button>
-
-  </div>
-</section>
-
-<!-- ============================================================ -->
-<!-- CLOSING / FOOTER                                               -->
-<!-- ============================================================ -->
-<footer class="relative z-10 px-6 py-24 text-center">
-  <p class="reveal font-serif-display italic text-2xl sm:text-3xl text-rose-800 max-w-xl mx-auto leading-relaxed">
-    Hope this year brings you so many good things. Happy Birthday, Mishé. 🤍
-  </p>
-  <p class="reveal mt-6 text-xs uppercase tracking-[0.3em] text-rose-400">Made with care, just for you</p>
-</footer>
-
-<!-- Custom JavaScript -->
-<script src="assets/js/code.js"></script>
+  <!-- Custom JavaScript -->
+  <script src="assets/js/code.js"></script>
 
 </body>
+
 </html>
